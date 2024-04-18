@@ -4,6 +4,7 @@ Este repositorio contiene una colección de algoritmos de cifrado implementados 
 
 ## Algoritmos:
 - Cifrado César
+- Cifrado de sustitución simple
 
 Cada algoritmo está diseñado para cifrar y descifrar datos de manera segura, ofreciendo una variedad de opciones para proteger la confidencialidad de la información. Las implementaciones están acompañadas de comentarios explicativos y ejemplos de uso para facilitar su comprensión y aplicación en proyectos reales.
 
