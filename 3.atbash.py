@@ -8,7 +8,7 @@ def cifrar_atbash(texto):
     caracteres_cifrados = []
     for caracter in texto:
         letra_minuscula = caracter.lower()
-        if letra_minuscula in ALFABETO:
+        if caracter in ALFABETO or caracter in ALFABETO.upper():
             posicion_original = ALFABETO.index(letra_minuscula)
             posicion_invertida = len(ALFABETO) - 1 - posicion_original
             letra_cifrada = ALFABETO[posicion_invertida]

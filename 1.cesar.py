@@ -8,7 +8,7 @@ def cifrar_cesar(texto, desplazamiento):
     caracteres_cifrados = []
     for caracter in texto:
         letra_minuscula = caracter.lower()
-        if letra_minuscula in ALFABETO:
+        if caracter in ALFABETO or caracter in ALFABETO.upper():
             posicion_original = ALFABETO.index(letra_minuscula)
             posicion_cifrada = (posicion_original + desplazamiento) % len(ALFABETO)
             letra_cifrada = ALFABETO[posicion_cifrada]

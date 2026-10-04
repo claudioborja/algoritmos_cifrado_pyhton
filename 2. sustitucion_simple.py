@@ -15,7 +15,7 @@ def sustituir_letras(texto, alfabeto_original, alfabeto_reemplazo):
     caracteres_sustituidos = []
     for caracter in texto:
         letra_minuscula = caracter.lower()
-        if letra_minuscula in alfabeto_original:
+        if caracter in alfabeto_original or caracter in alfabeto_original.upper():
             posicion = alfabeto_original.index(letra_minuscula)
             letra_reemplazo = alfabeto_reemplazo[posicion]
             if caracter.isupper():
