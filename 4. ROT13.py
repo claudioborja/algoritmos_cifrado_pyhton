@@ -1,36 +1,50 @@
-def cifrar_rot13(texto):
-    resultado = ''
-    for char in texto:
-        if char.isalpha():
-            offset = 13 if char.islower() else -13
-            resultado += chr((ord(char) - ord('a' if char.islower() else 'A') + offset) % 26 + ord('a' if char.islower() else 'A'))
-        else:
-            resultado += char
-    return resultado
+"""ROT13 desplaza 13 posiciones las 26 letras de a a z, sin incluir la ñ."""
 
-def descifrar_rot13(texto):
-    return cifrar_rot13(texto)
+ALFABETO = "abcdefghijklmnopqrstuvwxyz"
+DESPLAZAMIENTO = 13
+
+
+def cifrar_rot13(texto):
+    """Conserva mayúsculas y deja la ñ, las tildes y los signos sin cambios."""
+    caracteres_cifrados = []
+    for caracter in texto:
+        letra_minuscula = caracter.lower()
+        if letra_minuscula in ALFABETO:
+            posicion_original = ALFABETO.index(letra_minuscula)
+            posicion_cifrada = (posicion_original + DESPLAZAMIENTO) % len(ALFABETO)
+            letra_cifrada = ALFABETO[posicion_cifrada]
+            if caracter.isupper():
+                letra_cifrada = letra_cifrada.upper()
+            caracteres_cifrados.append(letra_cifrada)
+        else:
+            caracteres_cifrados.append(caracter)
+    return "".join(caracteres_cifrados)
+
+
+def descifrar_rot13(texto_cifrado):
+    """Aplicar ROT13 dos veces recupera el texto original."""
+    return cifrar_rot13(texto_cifrado)
+
 
 def main():
     while True:
-        print("1. Cifrar texto")
+        print("\n1. Cifrar texto")
         print("2. Descifrar texto")
         print("3. Salir")
-        opcion = input("Selecciona una opción: ")
+        opcion = input("Seleccione una opción: ").strip()
 
-        if opcion == '1':
-            texto = input("Introduce el texto a cifrar: ")
-            texto_cifrado = cifrar_rot13(texto)
-            print("Texto cifrado:", texto_cifrado)
-        elif opcion == '2':
-            texto = input("Introduce el texto a descifrar: ")
-            texto_descifrado = descifrar_rot13(texto)
-            print("Texto descifrado:", texto_descifrado)
-        elif opcion == '3':
-            print("Saliendo...")
+        if opcion in ("1", "2"):
+            texto = input("Ingrese el texto: ")
+            if opcion == "1":
+                print("Texto cifrado:", cifrar_rot13(texto))
+            else:
+                print("Texto descifrado:", descifrar_rot13(texto))
+        elif opcion == "3":
+            print("¡Hasta luego!")
             break
         else:
-            print("Opción no válida. Por favor, selecciona una opción válida.")
+            print("Opción no válida. Elija 1, 2 o 3.")
+
 
 if __name__ == "__main__":
     main()

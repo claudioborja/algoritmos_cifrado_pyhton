@@ -1,1 +1,1 @@
-req1
+# No se requieren paquetes externos; solo Python 3.

@@ -1,55 +1,70 @@
-def cifrar(texto, desplazamiento):
-    # Función para cifrar un texto utilizando el cifrado César
-    texto_cifrado = ""
-    for caracter in texto:
-        if caracter.isalpha():
-            # Calcula la nueva letra cifrada utilizando el desplazamiento proporcionado
-            nueva_letra = chr(((ord(caracter) - ord('a') + desplazamiento) % 26) + ord('a'))
-            texto_cifrado += nueva_letra
-        else:
-            texto_cifrado += caracter  # Si el caracter no es una letra, se agrega sin cifrar al texto cifrado
-    return texto_cifrado
+"""Sustitución simple: cada letra tiene un reemplazo definido por la clave."""
 
-def descifrar(texto_cifrado):
-    # Función para descifrar un texto cifrado utilizando fuerza bruta
-    resultados = []  
-    for desplazamiento in range(26):  # Itera sobre todos los posibles desplazamientos (0 al 25)
-        texto_descifrado = ""  
-        for caracter in texto_cifrado:  
-            if caracter.isalpha():  
-                nueva_letra = chr(((ord(caracter) - ord('a') - desplazamiento) % 26) + ord('a'))
-                texto_descifrado += nueva_letra  # Agrega el nuevo caracter descifrado al texto descifrado
-            else:
-                texto_descifrado += caracter  
-        resultados.append(texto_descifrado)  
-    return resultados  
+ALFABETO = "abcdefghijklmnñopqrstuvwxyz"
+
+
+def validar_clave(clave):
+    """La clave debe contener las 27 letras, sin omisiones ni repeticiones."""
+    clave = clave.lower()
+    if len(clave) != len(ALFABETO) or set(clave) != set(ALFABETO):
+        raise ValueError("La clave debe contener las 27 letras del alfabeto español una sola vez.")
+    return clave
+
+
+def sustituir_letras(texto, alfabeto_original, alfabeto_reemplazo):
+    caracteres_sustituidos = []
+    for caracter in texto:
+        letra_minuscula = caracter.lower()
+        if letra_minuscula in alfabeto_original:
+            posicion = alfabeto_original.index(letra_minuscula)
+            letra_reemplazo = alfabeto_reemplazo[posicion]
+            if caracter.isupper():
+                letra_reemplazo = letra_reemplazo.upper()
+            caracteres_sustituidos.append(letra_reemplazo)
+        else:
+            caracteres_sustituidos.append(caracter)
+    return "".join(caracteres_sustituidos)
+
+
+def cifrar_sustitucion(texto, clave):
+    """Reemplaza cada letra del alfabeto por la letra correspondiente de la clave."""
+    clave = validar_clave(clave)
+    return sustituir_letras(texto, ALFABETO, clave)
+
+
+def descifrar_sustitucion(texto_cifrado, clave):
+    """Invierte los reemplazos usando la misma clave del cifrado."""
+    clave = validar_clave(clave)
+    return sustituir_letras(texto_cifrado, clave, ALFABETO)
+
 
 def main():
     while True:
-        print("1. Cifrar texto")
+        print("\n1. Cifrar texto")
         print("2. Descifrar texto")
         print("3. Salir")
-        opcion = input("Seleccione una opción: ")  
+        opcion = input("Seleccione una opción: ").strip()
 
-        if opcion == '1':  
-            texto = input("Ingrese el texto a cifrar: ").lower()
-            desplazamiento = int(input("Ingrese el valor de desplazamiento (0-25): "))
-            texto_cifrado = cifrar(texto, desplazamiento) 
-            print("Texto cifrado:", texto_cifrado)  
+        if opcion in ("1", "2"):
+            texto = input("Ingrese el texto: ")
+            print("Alfabeto original:", ALFABETO)
+            print("Ejemplo de clave:  qwertyuiopasdfghjklñzxcvbnm")
+            clave = input("Ingrese las 27 letras en el orden de reemplazo: ").strip()
+            try:
+                if opcion == "1":
+                    resultado = cifrar_sustitucion(texto, clave)
+                    print("Texto cifrado:", resultado)
+                else:
+                    resultado = descifrar_sustitucion(texto, clave)
+                    print("Texto descifrado:", resultado)
+            except ValueError as error:
+                print(error)
+        elif opcion == "3":
+            print("¡Hasta luego!")
+            break
+        else:
+            print("Opción no válida. Elija 1, 2 o 3.")
 
-        elif opcion == '2': 
-            texto_cifrado = input("Ingrese el texto cifrado: ").lower() 
-            resultados_descifrado = descifrar(texto_cifrado)  
-            print("Posibles textos descifrados:")  
-            for idx, resultado in enumerate(resultados_descifrado):  
-                print(f"Desplazamiento {idx}: {resultado}")  
-
-        elif opcion == '3':  
-            print("Saliendo...")  
-            break  
-
-        else:  
-            print("Opción no válida. Por favor, seleccione una opción válida.") 
 
 if __name__ == "__main__":
-    main()  
+    main()
